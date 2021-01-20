@@ -1,0 +1,29 @@
+body { 
+    text-align: center; /*ESTO CENTRA EL TEXTO, SE TRASLADA POR HERENCIA A LOS TEXTOS HIJOS*/
+    margin: 0 auto; /*ESTO ES PARA CENTRAR EL CONTENIDO*/
+    width: 640px;
+}
+.full-img {
+    position: relative; /* al poner esto el botón corrigió su lugar a donde corresponde, esto es porque la posición absoluta aplica sobre al ancentro posicionado más cercano. De no posicionar esta clase entonces toma como referencia al body.  */ 
+}
+.overlay {
+    position: absolute; /*especificar top: 0 y left: 0 para que se superponga a la imagen */
+    top: 0px;
+    left: 0px;
+    width: 640px; /* dimensiones iguales a las de la foto */
+    height: 480px; 
+}
+button {
+    position: absolute; /* posición relativa al ancestro posicionado más cercado */
+    top: 2px;
+    left: 2px;
+    cursor: pointer; /* el cursor se convierte en manito*/
+}
+
+.thumb-bar {
+    display: flex; /*con esto disponemos a los div en línea distribuidos en el ancho del contenedor*/
+}
+.thumb-bar > div > img {
+    width: 100%; /*con esto ajustamos el ancho de la imagen al contenedor para evitar el overflow*/
+    cursor: pointer;
+}
