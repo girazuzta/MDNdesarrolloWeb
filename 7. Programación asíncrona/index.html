@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <title>My test page</title>
+  </head>
+  <body>
+    <p>This is my page</p>
+    <script>
+        // En terminal => python -m http.server => para iniciar servidor web (python tiene que estar instalado antes)
+        let promise = fetch('coffee.jpg') //fetch es ir a buscar
+        .then(response => {
+            if (!response.ok) { // si fetch tiene un error entonces response.ok = false (! = opuesto a). esto se hace porque si fetch falla el sistema no genera un error 404 o 500 ya que el msj fue recibido pero con un msj de error.. XD 
+                throw new Error ('HTTP error! status ${response.status}'); // no tengo idea donde avisa de este error, no lo hace en la pagina ni en el terminal
+            } else { 
+                return response.blob();
+            }
+        })
+        .then (myBlob => {
+            let objectURL = URL.createObjectURL(myBlob); // método que devuelve el URL del archivo indicado en el parámetro
+            let image = document.createElement('img'); // proceso para agregar el objeto imagen al DOM
+            image.src = objectURL;
+            document.body.appendChild(image); 
+        })
+        .catch(e => {
+            console.log('Hay un problema con el fetch: '+ e.message); // avisa del error en la consola del navegador. En un caso real y productivo, el catch sirve para manejar el error del lado del usuario. 
+        });
+
+    </script>
+  </body>
+</html>
