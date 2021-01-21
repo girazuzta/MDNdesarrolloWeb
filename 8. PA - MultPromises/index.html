@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <title>My test page</title>
+  </head>
+  <body>
+    <p>This is my page</p>
+    <script>
+        // Creamos una función de fetch muy similar a la vista en el ejercicio anterior, pero que toma el URL de una variable, decodifica su tipo y maneja el error. 
+        function FetchAndDecode (url, type) {
+            return fetch(url).then(response => {
+                if(!response.ok) {
+                    throw new Error('http error! status: ${response.status}');
+                }   else {
+                    if  (type === 'blob') {
+                        return response.blob ();
+                    }   else if (type === 'text') {
+                        return response.text(); 
+                    }
+                }
+            })
+            .catch(e => {
+                console.log('Hay un problema con el fetch del recurso "${url}": '+ e.message);
+            });
+        };
+        // invocamos la función para cada uno de los elementos que vamos a traer
+        let coffee = FetchAndDecode('coffee.jpg', 'blob');
+        let tea = FetchAndDecode('tea.jpg', 'blob');
+        let description = FetchAndDecode('description.txt', 'text');
+        // definimos el código para cuando se cumplen todas las promesas
+        Promise.all([coffee, tea, description]).then(values => { // Promise.all toma como parámetro una matriz de promesas y devuelve la matriz "values" con sus valores.
+            console.log(values);
+            // extraemos el URL y texto de los resultados para usarlos luego en el DOM
+            let objectURL1 = URL.createObjectURL(values[0]);
+            let objectURL2 = URL.createObjectURL(values[1]);
+            let descText = values[2];
+            // creamos los elementos HTML y los inyectamos al DOM
+            let image1 = document.createElement('img');
+            let image2 = document.createElement('img');
+            image1.src = objectURL1;
+            image2.src = objectURL2; 
+            document.body.appendChild(image1);
+            document.body.appendChild(image2);
+            let para = document.createElement('p');
+            para.textContent = descText;
+            document.body.appendChild(para);
+        })
+    </script>
+  </body>
+</html>
