@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Ajax starting point</title>
+
+    <style>
+      html, pre {
+        font-family: sans-serif;
+      }
+
+      body {
+        width: 500px;
+        margin: 0 auto;
+        background-color: #ccc;
+      }
+
+      pre {
+        line-height: 1.5;
+        letter-spacing: 0.05rem;
+        padding: 1rem;
+        background-color: white;
+      }
+
+      label {
+        width: 200px;
+        margin-right: 33px;
+      }
+
+      select {
+        width: 350px;
+        padding: 5px;
+      }
+
+    </style>
+    <!--[if lt IE 9]>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+    <h1>Ajax starting point</h1>
+
+    <form>
+      <label for="verse-choose">Choose a verse</label>
+      <select id="verse-choose" name="verse-choose">
+        <option>Verse 1</option>
+        <option>Verse 2</option>
+        <option>Verse 3</option>
+        <option>Verse 4</option>
+      </select>
+    </form>
+
+    <h2>The Conqueror Worm, <em>Edgar Allen Poe, 1843</em></h2>
+
+    <pre>
+
+    </pre>
+
+    <script> 
+    // En terminal => python -m http.server => para iniciar servidor web (python tiene que estar instalado antes)
+    // Ir a localhost:8000/ajax-fetch.html para ver la página hosteada desde el servidor
+    
+      const verseChoose = document.querySelector('select'); 
+      const poemDisplay = document.querySelector('pre');
+
+      verseChoose.onchange = function() { // event listener de la selección en el select
+        const verse = verseChoose.value; // event handler que almacena el valor seleccionado
+        updateDisplay(verse); // invocación a la función que actualiza el texto en base a le sección guardada
+        };
+      function updateDisplay(verse) {
+        verse = verse.replace(" ", ""); // eliminamos el espacio en el valor ya que el archivo no tiene espacio
+        verse = verse.toLowerCase(); // convertimos todo a minúsculas ya que el archivo está en minusculas y los servidores suelen ser "caseSensitive"
+        let url = verse + '.txt'; // agregamos la extensión, y ya tenemos el URL para hacer el request
+        
+        fetch(url).then(function(response) { // hacemos el request asíncrono usando fetch al URL y programamos operación sobre la promesa
+          response.text() // avisamos que la respuesta de la promesa es texto
+          .then(function(text) { // programamos cambio de contenido del preview en base a la promesa
+            poemDisplay.textContent = text;
+          });
+        });
+      };
+      updateDisplay('Verse 1');
+      verseChoose.value = 'Verse 1';  
+    </script>
+  </body>
+</html>
